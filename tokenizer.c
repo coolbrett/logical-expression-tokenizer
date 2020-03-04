@@ -61,12 +61,37 @@ void initialize_lexemes(Lexeme lexemes[]){
     Lexeme MULT_OP = {"MULT_OP", "*", "a"};
     Lexeme DIV_OP = {"DIV_OP", "/", "a"};
     Lexeme LEFT_PAREN = {"LEFT_PAREN", "(", "a"};
+    Lexeme RIGHT_PAREN = {"RIGHT_PAREN", ")", "a"};
+    Lexeme EXPON_OP = {"EXPON_OP", "^", "an"};
+    Lexeme ASSIGN_OP = {"ASSIGN_OP", "=", "an"};
+    Lexeme LESS_THAN_OP = {"LESS_THAN_OP", "<", "a"};
+    Lexeme LESS_THAN_OR_EQUAL_OP = {"LESS_THAN_OR_EQUAL_OP", "<=", "a"};
+    Lexeme GREATER_THEN_OP = {"GREATER_THEN_OP", ">", "a"};
+    Lexeme GREATER_THEN_OR_EQUAL_OP = {"GREATER_THEN_OR_EQUAL_OP", ">=", "a"};
+    Lexeme EQUALS_OP = {"EQUALS_OP", "==", "a"};
+    Lexeme NOT_OP = {"NOT_OP", "!", "a"};
+    Lexeme NOT_EQUALS_OP = {"NOT_EQUALS_OP", "!", "a"};
+    Lexeme SEMI_COLON = {"SEMI_COLON", ";", "a"};
+    Lexeme INT_LITERAL = {"INT_LITERAL", "[0-9]+", "an"};
+
     count = add(lexemes, ADD_OP, count);
     count = add(lexemes, SUB_OP, count);
     count = add(lexemes, MULT_OP, count);
     count = add(lexemes, DIV_OP, count);
     count = add(lexemes, LEFT_PAREN, count);
-    //LEFT OFF HERE 3/2/2020 7:30pm
+    count = add(lexemes, RIGHT_PAREN, count);
+    count = add(lexemes, EXPON_OP, count);
+    count = add(lexemes, ASSIGN_OP, count);
+    count = add(lexemes, LESS_THAN_OP, count);
+    count = add(lexemes, LESS_THAN_OR_EQUAL_OP, count);
+    count = add(lexemes, GREATER_THEN_OP, count);
+    count = add(lexemes, GREATER_THEN_OR_EQUAL_OP, count);
+    count = add(lexemes, EQUALS_OP, count);
+    count = add(lexemes, NOT_OP, count);
+    count = add(lexemes, NOT_EQUALS_OP, count);
+    count = add(lexemes, SEMI_COLON, count);
+    count = add(lexemes, INT_LITERAL, count);
+
 }
 
 /**
