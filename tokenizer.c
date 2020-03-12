@@ -44,7 +44,7 @@ void trim(char *string) {
  * @param count index of last added lexeme
  * @return index of next available spot in array
  */
-int add(Lexeme lexemes[], Lexeme lexeme, int count){
+int add(lexeme lexemes[], lexeme lexeme, int count){
     lexemes[count] = lexeme;
     return count + 1;
 }
@@ -54,25 +54,26 @@ int add(Lexeme lexemes[], Lexeme lexeme, int count){
  * and places them into the array passed in
  * @param lexemes array to hold created lexemes
  */
-void initialize_lexemes(Lexeme lexemes[]){
+void initialize_lexemes(lexeme lexemes[]){
     int count = 0;
-    Lexeme ADD_OP = {"ADD_OP", "+", "an"};
-    Lexeme SUB_OP = {"SUB_OP", "-", "a"};
-    Lexeme MULT_OP = {"MULT_OP", "*", "a"};
-    Lexeme DIV_OP = {"DIV_OP", "/", "a"};
-    Lexeme LEFT_PAREN = {"LEFT_PAREN", "(", "a"};
-    Lexeme RIGHT_PAREN = {"RIGHT_PAREN", ")", "a"};
-    Lexeme EXPON_OP = {"EXPON_OP", "^", "an"};
-    Lexeme ASSIGN_OP = {"ASSIGN_OP", "=", "an"};
-    Lexeme LESS_THAN_OP = {"LESS_THAN_OP", "<", "a"};
-    Lexeme LESS_THAN_OR_EQUAL_OP = {"LESS_THAN_OR_EQUAL_OP", "<=", "a"};
-    Lexeme GREATER_THEN_OP = {"GREATER_THEN_OP", ">", "a"};
-    Lexeme GREATER_THEN_OR_EQUAL_OP = {"GREATER_THEN_OR_EQUAL_OP", ">=", "a"};
-    Lexeme EQUALS_OP = {"EQUALS_OP", "==", "a"};
-    Lexeme NOT_OP = {"NOT_OP", "!", "a"};
-    Lexeme NOT_EQUALS_OP = {"NOT_EQUALS_OP", "!", "a"};
-    Lexeme SEMI_COLON = {"SEMI_COLON", ";", "a"};
-    Lexeme INT_LITERAL = {"INT_LITERAL", "[0-9]+", "an"};
+    lexeme ADD_OP = {"ADD_OP", "+", "an"};
+    lexeme SUB_OP = {"SUB_OP", "-", "a"};
+    lexeme MULT_OP = {"MULT_OP", "*", "a"};
+    lexeme DIV_OP = {"DIV_OP", "/", "a"};
+    lexeme LEFT_PAREN = {"LEFT_PAREN", "(", "a"};
+    lexeme RIGHT_PAREN = {"RIGHT_PAREN", ")", "a"};
+    lexeme EXPON_OP = {"EXPON_OP", "^", "an"};
+    lexeme ASSIGN_OP = {"ASSIGN_OP", "=", "an"};
+    lexeme LESS_THAN_OP = {"LESS_THAN_OP", "<", "a"};
+    lexeme LESS_THAN_OR_EQUAL_OP = {"LESS_THAN_OR_EQUAL_OP", "<=", "a"};
+    lexeme GREATER_THEN_OP = {"GREATER_THEN_OP", ">", "a"};
+    lexeme GREATER_THEN_OR_EQUAL_OP = {"GREATER_THEN_OR_EQUAL_OP", ">=", "a"};
+    lexeme EQUALS_OP = {"EQUALS_OP", "==", "a"};
+    lexeme NOT_OP = {"NOT_OP", "!", "a"};
+    lexeme NOT_EQUALS_OP = {"NOT_EQUALS_OP", "!=", "a"};
+    lexeme SEMI_COLON = {"SEMI_COLON", ";", "a"};
+    //this needs attention
+    lexeme INT_LITERAL = {"INT_LITERAL", "[0-9]+", "an"};
 
     count = add(lexemes, ADD_OP, count);
     count = add(lexemes, SUB_OP, count);
@@ -108,6 +109,11 @@ void initialize_lexemes(Lexeme lexemes[]){
 void get_token(char *token_ptr)
 {
     // Add code here.
+    printf("%s", line);
+    line++;
+    line++;
+    printf("%c", line[0]);
+    int i = 0;
 }
 
 /**
@@ -140,7 +146,7 @@ int main(int argc, char* argv[]) {
     }
 
     //Brett did this
-    Lexeme lexemes[TSIZE];
+    lexeme lexemes[TSIZE];
     initialize_lexemes(lexemes);
 
     while (fgets(input_line, LINE, in_file) != NULL){
@@ -148,7 +154,12 @@ int main(int argc, char* argv[]) {
         // where the input line resides.
         line = input_line;
         // Add code here.
-        //printf("%s", line);
+        while (1){
+            get_token(token);
+            //helper methods here to write to file
+
+            break;
+        }
 
     }
 
