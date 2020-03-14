@@ -95,6 +95,21 @@ int initialize_lexemes(lexeme lexemes[]){
     return count;
 }
 
+/**
+ * This function puts two chars together
+ * @param original char to be combined with
+ * @param other string to go into original
+ */
+void concatenate_two_char(char *original, const char *other){
+    while(*original) {
+        original++;
+    }
+    original++;
+    *original = *other;
+    original++;
+    *original = '\0';
+}
+
 int check_if_lexeme(char character, lexeme lexemes[], char tokens[], int count){
     //1 will be true
     //-1 will be false
@@ -124,6 +139,10 @@ void clear_token_array(char tokens[], int count){
     }
 }
 
+void write_output(char tokens[]){
+
+}
+
 /**
  * The function will have a character pointer as an argument.
  * This pointer will point to a character array (declared in main) that
@@ -135,27 +154,20 @@ void clear_token_array(char tokens[], int count){
  *
  * @param token_ptr pointer to token passed
 */
-void get_token(char *token_ptr)
-{
+void get_token(char *token_ptr){
     // Add code here.
     //printf("%s", line);
     while (line[0] != '\0') {
         if (line[0] != ' ' && line[0] != '\n') {
             *token_ptr = line[0];
-            line++;
             if (line[0] == ';'){
                 token_ptr++;
                 *token_ptr = '\0';
-            }
-            else if (check_if_INT_LITERAL(line[0]) == 1){
-                strcat(token_ptr, &line[0]);
-                token_ptr++;
             }else{
                 token_ptr++;
             }
-        }else{
-            line++;
         }
+        line++;
     }
 }
 
@@ -202,9 +214,7 @@ int main(int argc, char* argv[]) {
         // Add code here.
         while(line[0] != '\0') {
             get_token(token);
-            //write check if lexeme function
-
-            //write to file here
+            //write to file
         }
         clear_token_array(token, count);
     }
