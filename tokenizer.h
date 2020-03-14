@@ -43,7 +43,7 @@ void trim(char *string);
  * and places them into the array passed in
  * @param lexemes array to hold created lexemes
  */
-void initialize_lexemes(lexeme lexemes[]);
+int initialize_lexemes(lexeme lexemes[]);
 
 /**
  * This function adds a lexeme to the lexemes array passed in,
@@ -53,4 +53,4 @@ void initialize_lexemes(lexeme lexemes[]);
  * @param count index of last added lexeme
  * @return index of last added lexeme
  */
-int add(lexeme lexemes[], lexeme lexeme, int count);
+int add_lexeme(lexeme lexemes[], lexeme lexeme, int count);

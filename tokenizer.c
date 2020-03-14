@@ -44,7 +44,7 @@ void trim(char *string) {
  * @param count index of last added lexeme
  * @return index of next available spot in array
  */
-int add(lexeme lexemes[], lexeme lexeme, int count){
+int add_lexeme(lexeme lexemes[], lexeme lexeme, int count){
     lexemes[count] = lexeme;
     return count + 1;
 }
@@ -54,7 +54,7 @@ int add(lexeme lexemes[], lexeme lexeme, int count){
  * and places them into the array passed in
  * @param lexemes array to hold created lexemes
  */
-void initialize_lexemes(lexeme lexemes[]){
+int initialize_lexemes(lexeme lexemes[]){
     int count = 0;
     lexeme ADD_OP = {"ADD_OP", "+", "an"};
     lexeme SUB_OP = {"SUB_OP", "-", "a"};
@@ -68,31 +68,60 @@ void initialize_lexemes(lexeme lexemes[]){
     lexeme LESS_THAN_OR_EQUAL_OP = {"LESS_THAN_OR_EQUAL_OP", "<=", "a"};
     lexeme GREATER_THEN_OP = {"GREATER_THEN_OP", ">", "a"};
     lexeme GREATER_THEN_OR_EQUAL_OP = {"GREATER_THEN_OR_EQUAL_OP", ">=", "a"};
-    lexeme EQUALS_OP = {"EQUALS_OP", "==", "a"};
+    lexeme EQUALS_OP = {"EQUALS_OP", "==", "an"};
     lexeme NOT_OP = {"NOT_OP", "!", "a"};
     lexeme NOT_EQUALS_OP = {"NOT_EQUALS_OP", "!=", "a"};
     lexeme SEMI_COLON = {"SEMI_COLON", ";", "a"};
     //this needs attention
     lexeme INT_LITERAL = {"INT_LITERAL", "[0-9]+", "an"};
 
-    count = add(lexemes, ADD_OP, count);
-    count = add(lexemes, SUB_OP, count);
-    count = add(lexemes, MULT_OP, count);
-    count = add(lexemes, DIV_OP, count);
-    count = add(lexemes, LEFT_PAREN, count);
-    count = add(lexemes, RIGHT_PAREN, count);
-    count = add(lexemes, EXPON_OP, count);
-    count = add(lexemes, ASSIGN_OP, count);
-    count = add(lexemes, LESS_THAN_OP, count);
-    count = add(lexemes, LESS_THAN_OR_EQUAL_OP, count);
-    count = add(lexemes, GREATER_THEN_OP, count);
-    count = add(lexemes, GREATER_THEN_OR_EQUAL_OP, count);
-    count = add(lexemes, EQUALS_OP, count);
-    count = add(lexemes, NOT_OP, count);
-    count = add(lexemes, NOT_EQUALS_OP, count);
-    count = add(lexemes, SEMI_COLON, count);
-    count = add(lexemes, INT_LITERAL, count);
+    count = add_lexeme(lexemes, ADD_OP, count);
+    count = add_lexeme(lexemes, SUB_OP, count);
+    count = add_lexeme(lexemes, MULT_OP, count);
+    count = add_lexeme(lexemes, DIV_OP, count);
+    count = add_lexeme(lexemes, LEFT_PAREN, count);
+    count = add_lexeme(lexemes, RIGHT_PAREN, count);
+    count = add_lexeme(lexemes, EXPON_OP, count);
+    count = add_lexeme(lexemes, ASSIGN_OP, count);
+    count = add_lexeme(lexemes, LESS_THAN_OP, count);
+    count = add_lexeme(lexemes, LESS_THAN_OR_EQUAL_OP, count);
+    count = add_lexeme(lexemes, GREATER_THEN_OP, count);
+    count = add_lexeme(lexemes, GREATER_THEN_OR_EQUAL_OP, count);
+    count = add_lexeme(lexemes, EQUALS_OP, count);
+    count = add_lexeme(lexemes, NOT_OP, count);
+    count = add_lexeme(lexemes, NOT_EQUALS_OP, count);
+    count = add_lexeme(lexemes, SEMI_COLON, count);
+    //count = add_lexeme(lexemes, INT_LITERAL, count);
+    return count;
+}
 
+int check_if_lexeme(char character, lexeme lexemes[], char tokens[], int count){
+    //1 will be true
+    //-1 will be false
+    int i = 0;
+    while(i < count){
+        if (character == '=')
+        i++;
+    }
+}
+
+int check_if_INT_LITERAL(char character){
+    //1 will be true
+    //-1 will be false
+    if (character == '0' || character == '1' || character == '2' ||
+    character == '3' || character == '4' || character == '5' || character == '6' ||
+    character == '7' || character == '8' || character == '9'){
+        return 1;
+    }
+    return -1;
+}
+
+void clear_token_array(char tokens[], int count){
+    int i = 0;
+    while(i < count){
+        tokens[i] = '\0';
+        i++;
+    }
 }
 
 /**
@@ -109,17 +138,32 @@ void initialize_lexemes(lexeme lexemes[]){
 void get_token(char *token_ptr)
 {
     // Add code here.
-    printf("%s", line);
-    line++;
-    line++;
-    printf("%c", line[0]);
-    int i = 0;
+    //printf("%s", line);
+    while (line[0] != '\0') {
+        if (line[0] != ' ' && line[0] != '\n') {
+            *token_ptr = line[0];
+            line++;
+            if (line[0] == ';'){
+                token_ptr++;
+                *token_ptr = '\0';
+            }
+            else if (check_if_INT_LITERAL(line[0]) == 1){
+                strcat(token_ptr, &line[0]);
+                token_ptr++;
+            }else{
+                token_ptr++;
+            }
+        }else{
+            line++;
+        }
+    }
 }
 
 /**
 * add comment
 */
 int main(int argc, char* argv[]) {
+    //printf("%x", argc);
     char  token[TSIZE];      /* Spot to hold a token, fixed size */
     char  input_line[LINE];  /* Line of input, fixed size        */
     FILE  *in_file = NULL;        /* File pointer                     */
@@ -134,6 +178,7 @@ int main(int argc, char* argv[]) {
     }
 
     in_file = fopen(argv[1], "r");
+    //printf("%s", argv[1]);
     if (in_file == NULL) {
         fprintf(stderr, "ERROR: could not open %s for reading\n", argv[1]);
         exit(1);
@@ -147,20 +192,21 @@ int main(int argc, char* argv[]) {
 
     //Brett did this
     lexeme lexemes[TSIZE];
-    initialize_lexemes(lexemes);
+    count = initialize_lexemes(lexemes);
 
     while (fgets(input_line, LINE, in_file) != NULL){
         // Sets a global pointer to the memory location
         // where the input line resides.
         line = input_line;
+
         // Add code here.
-        while (1){
+        while(line[0] != '\0') {
             get_token(token);
-            //helper methods here to write to file
+            //write check if lexeme function
 
-            break;
+            //write to file here
         }
-
+        clear_token_array(token, count);
     }
 
     fclose(in_file);
