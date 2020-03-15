@@ -8,7 +8,7 @@
 #define LINE 100
 #define TSIZE 20
 #define LEXEME_NAME 25
-#define LEXEME_SYMBOL 15
+#define LEXEME_SYMBOL 10
 #define LEXEME_PREFIX 3
 #define TRUE 1
 #define FALSE 0

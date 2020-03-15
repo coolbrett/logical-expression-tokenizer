@@ -72,8 +72,9 @@ int initialize_lexemes(lexeme lexemes[]){
     lexeme NOT_OP = {"NOT_OP", "!", "a"};
     lexeme NOT_EQUALS_OP = {"NOT_EQUALS_OP", "!=", "a"};
     lexeme SEMI_COLON = {"SEMI_COLON", ";", "a"};
-    //this needs attention
-    lexeme INT_LITERAL = {"INT_LITERAL", "[0-9]+", "an"};
+    lexeme INT_LITERAL = {"INT_LITERAL", '0', '1', '2', '3',
+                          '4', '5', '6', '7', '8',
+                          '9', "an"};
 
     count = add_lexeme(lexemes, ADD_OP, count);
     count = add_lexeme(lexemes, SUB_OP, count);
@@ -91,23 +92,8 @@ int initialize_lexemes(lexeme lexemes[]){
     count = add_lexeme(lexemes, NOT_OP, count);
     count = add_lexeme(lexemes, NOT_EQUALS_OP, count);
     count = add_lexeme(lexemes, SEMI_COLON, count);
-    //count = add_lexeme(lexemes, INT_LITERAL, count);
+    count = add_lexeme(lexemes, INT_LITERAL, count);
     return count;
-}
-
-/**
- * This function puts two chars together
- * @param original char to be combined with
- * @param other string to go into original
- */
-void concatenate_two_char(char *original, const char *other){
-    while(*original) {
-        original++;
-    }
-    original++;
-    *original = *other;
-    original++;
-    *original = '\0';
 }
 
 int check_if_lexeme(char character, lexeme lexemes[], char tokens[], int count){
@@ -139,8 +125,13 @@ void clear_token_array(char tokens[], int count){
     }
 }
 
-void write_output(char tokens[]){
-
+void write_output(const char tokens[], FILE *output, int line_count){
+    int i = 0;
+    while(tokens[i] != '\0'){
+        char temp = tokens[i];
+        //switch statement for each case
+        //will probably need LOTS of helper functions :-)
+    }
 }
 
 /**
@@ -205,18 +196,20 @@ int main(int argc, char* argv[]) {
     //Brett did this
     lexeme lexemes[TSIZE];
     count = initialize_lexemes(lexemes);
-
+    line_count = 0;
     while (fgets(input_line, LINE, in_file) != NULL){
         // Sets a global pointer to the memory location
         // where the input line resides.
         line = input_line;
+        line_count++;
 
         // Add code here.
         while(line[0] != '\0') {
             get_token(token);
             //write to file
+            write_output(token, out_file, line_count);
         }
-        clear_token_array(token, count);
+        clear_token_array(token, TSIZE);
     }
 
     fclose(in_file);
