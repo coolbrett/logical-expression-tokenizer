@@ -96,16 +96,6 @@ int initialize_lexemes(lexeme lexemes[]){
     return count;
 }
 
-int check_if_lexeme(char character, lexeme lexemes[], char tokens[], int count){
-    //1 will be true
-    //-1 will be false
-    int i = 0;
-    while(i < count){
-        if (character == '=')
-        i++;
-    }
-}
-
 int check_if_INT_LITERAL(char character){
     //1 will be true
     //-1 will be false
@@ -126,12 +116,68 @@ void clear_token_array(char tokens[], int count){
 }
 
 void write_output(const char tokens[], FILE *output, int line_count){
-    int i = 0;
-    while(tokens[i] != '\0'){
-        char temp = tokens[i];
+    int curr_token = 0;
+    fprintf(output,"Statement #%x\n",line_count);
+    while(tokens[curr_token] != '\0') {
+        char temp = tokens[curr_token];
         //switch statement for each case
         //will probably need LOTS of helper functions :-)
+        char digit_str[TSIZE];
+        int curr_digit = 0;
+        while (isdigit((int)(tokens[curr_token])) == 0) {
+            digit_str[curr_digit] = tokens[curr_token];
+            curr_token++;
+            curr_digit++;
+        }
+        switch (temp) {
+            case '=' :
+                if (tokens[curr_token + 1] == '=') {
+                    fprintf(output, "Lexeme %x is ==\n", curr_token);
+                    curr_token++;
+                } else {
+                    fprintf(output, "Lexeme %x is =\n", curr_token);
+                }
+            case '<':
+                if (tokens[curr_token + 1] == '=') {
+                    fprintf(output, "Lexeme %x is <=\n", curr_token);
+                    curr_token++;
+                } else {
+                    fprintf(output, "Lexeme %x is <\n", curr_token);
+                }
+            case '>':
+                if (tokens[curr_token + 1] == '=') {
+                    fprintf(output, "Lexeme %x is >=\n", curr_token);
+                    curr_token++;
+                } else {
+                    fprintf(output, "Lexeme %x is >\n", curr_token);
+                }
+            case '!':
+                if (tokens[curr_token + 1] == '=') {
+                    fprintf(output, "Lexeme %x is !=\n", curr_token);
+                    curr_token++;
+                } else {
+                    fprintf(output, "Lexeme %x is !\n", curr_token);
+                }
+            case '+':
+                fprintf(output, "Lexeme %x is +\n", curr_token);
+            case '-':
+                fprintf(output, "Lexeme %x is -\n", curr_token);
+            case '*':
+                fprintf(output, "Lexeme %x is *\n", curr_token);
+            case '/':
+                fprintf(output, "Lexeme %x is /\n", curr_token);
+            case '(':
+                fprintf(output, "Lexeme %x is (\n", curr_token);
+            case ')':
+                fprintf(output, "Lexeme %x is )\n", curr_token);
+            case '^':
+                fprintf(output, "Lexeme %x is ^\n", curr_token);
+            case ';':
+                fprintf(output, "Lexeme %x is ;\n", curr_token);
+            }
+        curr_token++;
     }
+
 }
 
 /**
@@ -147,7 +193,7 @@ void write_output(const char tokens[], FILE *output, int line_count){
 */
 void get_token(char *token_ptr){
     // Add code here.
-    //printf("%s", line);
+    // printf("%s", line);
     while (line[0] != '\0') {
         if (line[0] != ' ' && line[0] != '\n') {
             *token_ptr = line[0];
@@ -169,11 +215,11 @@ int main(int argc, char* argv[]) {
     //printf("%x", argc);
     char  token[TSIZE];      /* Spot to hold a token, fixed size */
     char  input_line[LINE];  /* Line of input, fixed size        */
-    FILE  *in_file = NULL;        /* File pointer                     */
+    FILE  *in_file = NULL;   /* File pointer                     */
     FILE  *out_file = NULL;
     int   line_count,        /* Number of lines read             */
-    start,             /* start of new statement           */
-    count;             /* count of tokens                  */
+    start,                   /* start of new statement           */
+    count;                   /* count of tokens                  */
 
     if (argc != 3) {
         printf("Usage: tokenizer inputFile outputFile\n");
