@@ -117,63 +117,85 @@ void clear_token_array(char tokens[], int count){
 
 void write_output(const char tokens[], FILE *output, int line_count){
     int curr_token = 0;
-    fprintf(output,"Statement #%x\n",line_count);
+    fprintf(output,"Statement #%d\n",line_count);
     while(tokens[curr_token] != '\0') {
         char temp = tokens[curr_token];
         //switch statement for each case
         //will probably need LOTS of helper functions :-)
         char digit_str[TSIZE];
         int curr_digit = 0;
-        while (isdigit((int)(tokens[curr_token])) == 0) {
+        int is_digit = 0;
+        while (isdigit((int)(tokens[curr_token])) != 0) {
             digit_str[curr_digit] = tokens[curr_token];
             curr_token++;
             curr_digit++;
+            is_digit = 1;
         }
+        if (is_digit == 1){
+            fprintf(output, "Lexeme %d is ", digit_str );
+            curr_token++;
+        }
+
         switch (temp) {
             case '=' :
                 if (tokens[curr_token + 1] == '=') {
-                    fprintf(output, "Lexeme %x is ==\n", curr_token);
+                    fprintf(output, "Lexeme %d is ==\n", curr_token);
                     curr_token++;
                 } else {
-                    fprintf(output, "Lexeme %x is =\n", curr_token);
+                    fprintf(output, "Lexeme %d is =\n", curr_token);
                 }
+                break;
             case '<':
                 if (tokens[curr_token + 1] == '=') {
-                    fprintf(output, "Lexeme %x is <=\n", curr_token);
+                    fprintf(output, "Lexeme %d is <=\n", curr_token);
                     curr_token++;
                 } else {
-                    fprintf(output, "Lexeme %x is <\n", curr_token);
+                    fprintf(output, "Lexeme %d is <\n", curr_token);
                 }
+                break;
             case '>':
                 if (tokens[curr_token + 1] == '=') {
-                    fprintf(output, "Lexeme %x is >=\n", curr_token);
+                    fprintf(output, "Lexeme %d is >=\n", curr_token);
                     curr_token++;
                 } else {
-                    fprintf(output, "Lexeme %x is >\n", curr_token);
+                    fprintf(output, "Lexeme %d is >\n", curr_token);
                 }
+                break;
             case '!':
                 if (tokens[curr_token + 1] == '=') {
-                    fprintf(output, "Lexeme %x is !=\n", curr_token);
+                    fprintf(output, "Lexeme %d is !=\n", curr_token);
                     curr_token++;
                 } else {
-                    fprintf(output, "Lexeme %x is !\n", curr_token);
+                    fprintf(output, "Lexeme %d is !\n", curr_token);
                 }
+                break;
             case '+':
-                fprintf(output, "Lexeme %x is +\n", curr_token);
+                fprintf(output, "Lexeme %d is +\n", curr_token);
+                break;
             case '-':
-                fprintf(output, "Lexeme %x is -\n", curr_token);
+                fprintf(output, "Lexeme %d is -\n", curr_token);
+                break;
             case '*':
-                fprintf(output, "Lexeme %x is *\n", curr_token);
+                fprintf(output, "Lexeme %d is *\n", curr_token);
+                break;
             case '/':
-                fprintf(output, "Lexeme %x is /\n", curr_token);
+                fprintf(output, "Lexeme %d is /\n", curr_token);
+                break;
             case '(':
-                fprintf(output, "Lexeme %x is (\n", curr_token);
+                fprintf(output, "Lexeme %d is (\n", curr_token);
+                break;
             case ')':
-                fprintf(output, "Lexeme %x is )\n", curr_token);
+                fprintf(output, "Lexeme %d is )\n", curr_token);
+                break;
             case '^':
-                fprintf(output, "Lexeme %x is ^\n", curr_token);
+                fprintf(output, "Lexeme %d is ^\n", curr_token);
+                break;
             case ';':
-                fprintf(output, "Lexeme %x is ;\n", curr_token);
+                fprintf(output, "Lexeme %d is ;\n", curr_token);
+                break;
+            default:
+                fprintf(output,"Lexical error: not a lexeme\n");
+                break;
             }
         curr_token++;
     }
