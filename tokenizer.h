@@ -19,38 +19,10 @@ typedef struct {
     char prefix[LEXEME_PREFIX];
 }lexeme;
 
-/**
- * The function will have a character pointer as an argument.
- * This pointer will point to a character array (declared in main) that
- * should contain the last token discovered after the function returns.
- * The char* that is passed to the get_token function will contain the
- * next token in line when it, get_token returns. So if I had the line 12=17,
- * AFTER the first time I ran get_token(var), var would contain the
- * string ``12'' and the second time it would contain the string ``=''
- *
- * @param token_ptr pointer to token passed
-*/
+/* Function prototype headers */
 void get_token(char *);
-
-/**
- * This function eliminates all whitespace leading and/or trailing the string passed
- * @param string string to be trimmed
- */
-void trim(char *string);
-
-/**
- * This function creates all lexemes along with their values and prefixes
- * and places them into the array passed in
- * @param lexemes array to hold created lexemes
- */
 int initialize_lexemes(lexeme lexemes[]);
-
-/**
- * This function adds a lexeme to the lexemes array passed in,
- * then returns the index where it was added
- * @param lexemes array to add lexeme
- * @param lexeme lexeme to be added
- * @param count index of last added lexeme
- * @return index of last added lexeme
- */
 int add_lexeme(lexeme lexemes[], lexeme lexeme, int count);
+void write_output(const char tokens[], FILE *output, int line_count);
+void read_file(const char tokens[], FILE *output, int line_count);
+void clear_token_array(char tokens[], int count);
