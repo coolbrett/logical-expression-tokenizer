@@ -18,24 +18,66 @@
 // global variables
 char *line; // Global pointer to line of input
 
-
 /**
- * This method eliminates all whitespace leading and/or trailing the string passed
- * @param string string to be trimmed
+ * Main function of the tokenizer program file. takes user input and either gives error messages if input is incorrect
+ * or if correct information supplied then it calls the remaining helper functions to read through the file and output
+ * the found tokens into the output file.
+ * @param argc the number of command line arguments.
+ * @param argv the command line arguments
+ * @return returns the number 0 if the function completes.
  */
-void trim(char *string) {
-    char *ptr = string;
-    int length = strlen(ptr);
+int main(int argc, char* argv[]) {
+    char  token[TSIZE];         /* Spot to hold a token, fixed size */
+    char  input_line[LINE];     /* Line of input, fixed size        */
+    FILE  *in_file = NULL;      /* File pointer                     */
+    FILE  *out_file = NULL;     /* File pointer                     */
+    int   line_count,           /* Number of lines read             */
+        start,                  /* start of new statement           */
+        count;                  /* count of tokens                  */
 
-    while(isspace(ptr[length - 1])){
-        ptr[--length] = 0;
+    //If missing all arguments notifies user and gracefully exits
+    if (argc != 3) {
+        printf("Usage: tokenizer inputFile outputFile\n");
+        exit(1);
     }
-    while(*ptr && isspace(*ptr)){
-        ++ptr, --length;
+
+    in_file = fopen(argv[1], "r");
+    //if input file can't be read the user is notified and program gracefully exits
+    if (in_file == NULL) {
+        fprintf(stderr, "ERROR: could not open %s for reading\n", argv[1]);
+        exit(1);
     }
-    memmove(string, ptr, length + 1);
+    //if output file can't be written into the user is notified and program gracefully exits
+    out_file = fopen(argv[2], "w");
+    if (out_file == NULL) {
+        fprintf(stderr, "ERROR: could not open %s for writing\n", argv[2]);
+        exit(1);
+    }
+    read_file();
+    //Brett did this
+    lexeme lexemes[TSIZE];
+    count = initialize_lexemes(lexemes);
+    line_count = 0;
+    //WE SHOULD HAVE A FUNCTION CALLED READ FILE THAT DOES THIS WHILE LOOP:
+    while (fgets(input_line, LINE, in_file) != NULL){
+        // Sets a global pointer to the memory location
+        // where the input line resides.
+        line = input_line;
+        line_count++;
+
+        // Add code here.
+        while(line[0] != '\0') {
+            get_token(token);
+            //write to file
+            write_output(token, out_file, line_count);
+        }
+        clear_token_array(token, TSIZE);
+    }
+
+    fclose(in_file);
+    fclose(out_file);
+    return 0;
 }
-
 /**
  * This function adds a lexeme to the lexemes array passed in,
  * then returns the index where it was added
@@ -133,7 +175,6 @@ void write_output(const char tokens[], FILE *output, int line_count){
         }
         if (is_digit == 1){
             fprintf(output, "Lexeme %d is ", digit_str );
-            curr_token++;
         }
 
         switch (temp) {
@@ -230,57 +271,10 @@ void get_token(char *token_ptr){
     }
 }
 
+void read_file(const char tokens[], FILE *output, int line_count){
+
+}
+
 /**
 * add comment
 */
-int main(int argc, char* argv[]) {
-    //printf("%x", argc);
-    char  token[TSIZE];      /* Spot to hold a token, fixed size */
-    char  input_line[LINE];  /* Line of input, fixed size        */
-    FILE  *in_file = NULL;   /* File pointer                     */
-    FILE  *out_file = NULL;
-    int   line_count,        /* Number of lines read             */
-    start,                   /* start of new statement           */
-    count;                   /* count of tokens                  */
-
-    if (argc != 3) {
-        printf("Usage: tokenizer inputFile outputFile\n");
-        exit(1);
-    }
-
-    in_file = fopen(argv[1], "r");
-    //printf("%s", argv[1]);
-    if (in_file == NULL) {
-        fprintf(stderr, "ERROR: could not open %s for reading\n", argv[1]);
-        exit(1);
-    }
-
-    out_file = fopen(argv[2], "w");
-    if (out_file == NULL) {
-        fprintf(stderr, "ERROR: could not open %s for writing\n", argv[2]);
-        exit(1);
-    }
-
-    //Brett did this
-    lexeme lexemes[TSIZE];
-    count = initialize_lexemes(lexemes);
-    line_count = 0;
-    while (fgets(input_line, LINE, in_file) != NULL){
-        // Sets a global pointer to the memory location
-        // where the input line resides.
-        line = input_line;
-        line_count++;
-
-        // Add code here.
-        while(line[0] != '\0') {
-            get_token(token);
-            //write to file
-            write_output(token, out_file, line_count);
-        }
-        clear_token_array(token, TSIZE);
-    }
-
-    fclose(in_file);
-    fclose(out_file);
-    return 0;
-}
