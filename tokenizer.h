@@ -23,6 +23,6 @@ typedef struct {
 void get_token(char *);
 int initialize_lexemes(lexeme lexemes[]);
 int add_lexeme(lexeme lexemes[], lexeme lexeme, int);
-int write_output(const char tokens[], FILE *output, int , int , int , int);
+int write_output(const char tokens[], FILE *output, int , int *, int, int);
 void read_file(const char tokens[], FILE *output, int);
 void clear_token_array(char tokens[], int);

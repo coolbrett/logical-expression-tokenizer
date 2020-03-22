@@ -32,8 +32,8 @@ int main(int argc, char* argv[]) {
     FILE  *in_file = NULL;      /* File pointer                     */
     FILE  *out_file = NULL;     /* File pointer                     */
     int   line_count,           /* Number of lines read             */
-        start,                  /* start of new statement           */
-        count;                  /* count of tokens                  */
+    start,                  /* start of new statement           */
+    count;                  /* count of tokens                  */
 
     //If missing all arguments notifies user and gracefully exits
     if (argc != 3) {
@@ -70,14 +70,15 @@ int main(int argc, char* argv[]) {
         while(line[0] != '\0') {
             get_token(token);
             //write to file
-            start = write_output(token, out_file, line_count, start,curr_token, curr_lexeme);
+            curr_lexeme = write_output(token, out_file, line_count, &start, curr_token, curr_lexeme);
             if(start == 1){
                 curr_token = 0;
                 curr_lexeme = 0;
             }
         }
 
-        if(token[0] != '\0') {
+        if(token[0] != '\0' && start == 1) {
+            fprintf(out_file, "\n---------------------------------------------------------\n");
             line_count++;
         }
     }
@@ -115,12 +116,12 @@ void get_token(char *token_ptr){
     }
 }
 
-int write_output(const char tokens[], FILE *output, int line_count, int start, int curr_token, int curr_lexeme){
-    if(tokens[0] != '\0' && start == 1) {
-        fprintf(output, "Statement #%d\n", line_count);
+int write_output(const char tokens[], FILE *output, int line_count, int *start, int curr_token, int curr_lexeme){
+    if(tokens[0] != '\0' && *start == 1) {
+        fprintf(output, "Statement #%d", line_count);
     }
     while(tokens[curr_token] != '\0') {
-        start = 0;
+        *start = 0;
         char temp = tokens[curr_token];
         //switch statement for each case
         //will probably need LOTS of helper functions :-)
@@ -129,72 +130,72 @@ int write_output(const char tokens[], FILE *output, int line_count, int start, i
         switch (temp) {
             case '=' :
                 if (tokens[curr_token + 1] == '=') {
-                    fprintf(output, "Lexeme %d is ==\n", curr_lexeme);
+                    fprintf(output, "\nLexeme %d is ==", curr_lexeme);
                     curr_token = curr_token + 2;
                 } else {
-                    fprintf(output, "Lexeme %d is =\n", curr_lexeme);
+                    fprintf(output, "\nLexeme %d is =", curr_lexeme);
                     curr_token++;
                 }
                 break;
             case '<':
                 if (tokens[curr_token + 1] == '=') {
-                    fprintf(output, "Lexeme %d is <=\n", curr_lexeme);
+                    fprintf(output, "\nLexeme %d is <=", curr_lexeme);
                     curr_token = curr_token + 2;
                 } else {
-                    fprintf(output, "Lexeme %d is <\n", curr_lexeme);
+                    fprintf(output, "\nLexeme %d is <", curr_lexeme);
                     curr_token++;
                 }
                 break;
             case '>':
                 if (tokens[curr_token + 1] == '=') {
-                    fprintf(output, "Lexeme %d is >=\n", curr_lexeme);
+                    fprintf(output, "\nLexeme %d is >=", curr_lexeme);
                     curr_token = curr_token + 2;
                 } else {
-                    fprintf(output, "Lexeme %d is >\n", curr_lexeme);
+                    fprintf(output, "\nLexeme %d is >", curr_lexeme);
                     curr_token++;
                 }
                 break;
             case '!':
                 if (tokens[curr_token + 1] == '=') {
-                    fprintf(output, "Lexeme %d is !=\n", curr_lexeme);
+                    fprintf(output, "\nLexeme %d is !=", curr_lexeme);
                     curr_token = curr_token + 2;
                 } else {
-                    fprintf(output, "Lexeme %d is !\n", curr_lexeme);
+                    fprintf(output, "\nLexeme %d is !", curr_lexeme);
                     curr_token++;
                 }
                 break;
             case '+':
-                fprintf(output, "Lexeme %d is +\n", curr_lexeme);
+                fprintf(output, "\nLexeme %d is +", curr_lexeme);
                 curr_token++;
                 break;
             case '-':
-                fprintf(output, "Lexeme %d is -\n", curr_lexeme);
+                fprintf(output, "\nLexeme %d is -", curr_lexeme);
                 curr_token++;
                 break;
             case '*':
-                fprintf(output, "Lexeme %d is *\n", curr_lexeme);
+                fprintf(output, "\nLexeme %d is *", curr_lexeme);
                 curr_token++;
                 break;
             case '/':
-                fprintf(output, "Lexeme %d is /\n", curr_lexeme);
+                fprintf(output, "\nLexeme %d is /", curr_lexeme);
                 curr_token++;
                 break;
             case '(':
-                fprintf(output, "Lexeme %d is (\n", curr_lexeme);
+                fprintf(output, "\nLexeme %d is (", curr_lexeme);
                 curr_token++;
                 break;
             case ')':
-                fprintf(output, "Lexeme %d is )\n", curr_lexeme);
+                fprintf(output, "\nLexeme %d is )", curr_lexeme);
                 curr_token++;
                 break;
             case '^':
-                fprintf(output, "Lexeme %d is ^\n", curr_lexeme);
+                fprintf(output, "\nLexeme %d is ^", curr_lexeme);
                 curr_token++;
                 break;
             case ';':
-                fprintf(output, "Lexeme %d is ;\n", curr_lexeme);
+                fprintf(output, "\nLexeme %d is ;", curr_lexeme);
                 curr_token++;
-                start = 1;
+                *start = 1;
                 break;
             case '0' ... '9':
                 while (isdigit(tokens[curr_token])){
@@ -202,17 +203,16 @@ int write_output(const char tokens[], FILE *output, int line_count, int start, i
                     curr_digit++;
                     curr_token++;
                 }
-                fprintf(output, "Lexeme %d is %s\n", curr_lexeme, digits);
+                fprintf(output, "\nLexeme %d is %s", curr_lexeme, digits);
                 break;
             default:
-                fprintf(output,"Lexical error: not a lexeme\n");
+                fprintf(output,"\nLexical error: not a lexeme");
                 curr_token++;
                 break;
-            }
+        }
         curr_lexeme++;
     }
-    return start;
-
+    return curr_lexeme;
 }
 
 void clear_token_array(char tokens[], int count){
@@ -283,12 +283,12 @@ int initialize_lexemes(lexeme lexemes[]){
     return count;
 }
 
-int check_if_INT_LITERAL(char character){
+int check_if_INT_LITERAL(char character) {
     //1 will be true
     //-1 will be false
     if (character == '0' || character == '1' || character == '2' ||
         character == '3' || character == '4' || character == '5' || character == '6' ||
-        character == '7' || character == '8' || character == '9'){
+        character == '7' || character == '8' || character == '9') {
         return 1;
     }
     return -1;
