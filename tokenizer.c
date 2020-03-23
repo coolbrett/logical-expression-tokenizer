@@ -9,10 +9,6 @@
  * @version 1.0 (3/22/2020)
  */
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <ctype.h>
 #include "tokenizer.h"
 
 // global variables
@@ -32,8 +28,8 @@ int main(int argc, char* argv[]) {
     FILE  *in_file = NULL;      /* File pointer                     */
     FILE  *out_file = NULL;     /* File pointer                     */
     int   line_count,           /* Number of lines read             */
-        start,                  /* start of new statement           */
-        count;                  /* count of tokens                  */
+    start,                  /* start of new statement           */
+    count;                  /* count of tokens                  */
     //If missing all arguments notifies user and gracefully exits
     if (argc != 3) {
         printf("Usage: tokenizer inputFile outputFile\n");
@@ -54,7 +50,7 @@ int main(int argc, char* argv[]) {
     line_count = 1;  // variable that keeps track of the statements
     start = TRUE;  // variable that keeps track of whether the current lexeme is the start of a new line
     //counters for tokens and lexemes
-    int curr_token = 0;
+    count = 0;
     int curr_lexeme = 0;
     // while loop that loops through each line of the input file then writes it to the output file.
     while (fgets(input_line, LINE, in_file) != NULL){
@@ -65,10 +61,10 @@ int main(int argc, char* argv[]) {
         while(line[0] != '\0') {
             get_token(token);
             // write to file
-            curr_lexeme = write_output(token, out_file, line_count, &start, curr_token, curr_lexeme);
+            curr_lexeme = write_output(token, out_file, line_count, &start, count, curr_lexeme);
             // if the current token is the start of a new statement set the current counters to true.
             if(start == TRUE){
-                curr_token = 0;
+                count = 0;
                 curr_lexeme = 0;
             } // end if
         } // end while

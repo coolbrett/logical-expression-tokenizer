@@ -9,6 +9,10 @@
 #define TSIZE 20
 #define TRUE 1
 #define FALSE 0
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <ctype.h>
 
 /* Function prototype headers */
 void get_token(char *);
